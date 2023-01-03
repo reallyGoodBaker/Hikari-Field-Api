@@ -10,10 +10,10 @@ async function logout(auth) {
 }
 
 async function refresh(auth) {
-    return (await post('https://api.hikarifield.co.jp/v1/auth/login', {}, authHeader(auth))).json()
+    return (await post('https://api.hikarifield.co.jp/v1/auth/login', {}, authHeader(auth)))
 }
 
 
-module.exports = { 
+module.exports = {
     login, logout, refresh
 }

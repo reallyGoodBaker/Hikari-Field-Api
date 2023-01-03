@@ -106,5 +106,5 @@ export const getDownloadUrl: (gameFiles: GameFiles, user: User, sign: Sign) => s
 export const getGameFiles: (auth: Auth, buildId: number) => Promise<GameFiles>
 export const info: (auth: Auth) => Promise<User>
 export const faqs: () => Promise<Faqs>
-export const refresh: (auth: Auth) => Promise<Auth>
+export const refresh: (auth: Auth) => Promise<null>
 export const signUrl: (auth: Auth, buildId: number, uuid: string) => Promise<Sign>

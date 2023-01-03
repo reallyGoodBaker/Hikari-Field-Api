@@ -2,8 +2,6 @@
 
  JS api for Hikari Field
 
-
-
 ## 快速上手
 
 ```cmd

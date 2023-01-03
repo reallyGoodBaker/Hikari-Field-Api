@@ -5,7 +5,7 @@ const https = require('https')
  * @param {string} url 
  * @param {any} data 
  * @param {any} headers 
- * @returns {Promise<{json():any;text():string;buffer():Buffer}>}
+ * @returns {Promise<{json():any;text():string;buffer():Buffer;headers:any;code:number}>}
  */
 function request(method, url, data, headers = {}) {
     url = url.replace(/https?:\/\//, '')
@@ -35,28 +35,32 @@ function request(method, url, data, headers = {}) {
             })
 
             res.on('end', () => {
-                if (/20[0-3]/.test(res.statusCode + '')) {
-                    resolve({
-                        json() {
-                            return JSON.parse(rawData.toString())
-                        },
-                        text() {
-                            return rawData.toString()
-                        },
-                        buffer() {
-                            return rawData
-                        }
-                    })
-                } else {
-                    resolve(null)
+                let returnVal = {
+                    json() {
+                        return JSON.parse(rawData.toString())
+                    },
+                    text() {
+                        return rawData.toString()
+                    },
+                    buffer() {
+                        return rawData
+                    },
+                    headers: Object.assign({}, res.headers),
+                    code: res.statusCode
                 }
+
+                resolve(returnVal)
             })
         })
 
         req.on('error', err => reject(err))
 
         if (data !== void 0) {
-            req.write(JSON.stringify(data))
+            if (typeof body !== 'string') {
+                data = JSON.stringify(data)
+            }
+
+            req.write(data)
         }
 
         req.end()
@@ -112,5 +116,5 @@ function get(url, data) {
 }
 
 module.exports = {
-    post, get, del
+    post, get, del, request
 }
